@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>अनदेखा संघर्ष - मृत्युंजय ब्रह्मावंशी</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Yatra+One&family=Tiro+Devanagari+Hindi:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #fcfbf7;
+      --card-bg: #ffffff;
+      --text-color: #2c2523;
+      --accent-color: #8b0000;
+      --border-color: #e2dcd5;
+      --sidebar-bg: #f4efe6;
+      --font-size: 1.15rem;
+    }
+
+    body.dark-mode {
+      --bg-color: #1a1818;
+      --card-bg: #242121;
+      --text-color: #e6e1da;
+      --accent-color: #d9534f;
+      --border-color: #383332;
+      --sidebar-bg: #121111;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body {
+      font-family: 'Tiro Devanagari Hindi', serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.9;
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: transparent;
+      z-index: 1000;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--accent-color);
+      width: 0%;
+    }
+
+    /* Layout */
+    .app-container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar Navigation */
+    .sidebar {
+      width: 300px;
+      background-color: var(--sidebar-bg);
+      border-right: 1px solid var(--border-color);
+      padding: 2rem 1rem;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .book-title {
+      font-family: 'Rozha One', serif;
+      font-size: 1.8rem;
+      color: var(--accent-color);
+      text-align: center;
+      margin-bottom: 0.2rem;
+    }
+
+    .author-name {
+      text-align: center;
+      font-size: 0.95rem;
+      color: var(--text-color);
+      opacity: 0.8;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 1rem;
+    }
+
+    .chapter-list {
+      list-style: none;
+    }
+
+    .chapter-item {
+      padding: 0.8rem 1rem;
+      margin-bottom: 0.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .chapter-item:hover, .chapter-item.active {
+      background-color: var(--accent-color);
+      color: #ffffff;
+    }
+
+    /* Main Reader Area */
+    .main-content {
+      flex: 1;
+      max-width: 850px;
+      margin: 0 auto;
+      padding: 2rem 3rem;
+    }
+
+    /* Top Reader Controls */
+    .controls {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-color);
+      padding: 0.5rem 0.9rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .btn:hover {
+      border-color: var(--accent-color);
+    }
+
+    /* Story Content Formatting */
+    .story-card {
+      background: var(--card-bg);
+      padding: 3rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+
+    .chapter-header {
+      font-family: 'Yatra One', cursive;
+      font-size: 2.2rem;
+      color: var(--accent-color);
+      margin-bottom: 1.5rem;
+      text-align: center;
+      border-bottom: 2px solid var(--accent-color);
+      padding-bottom: 0.8rem;
+    }
+
+    .story-text {
+      font-size: var(--font-size);
+      text-align: justify;
+    }
+
+    .story-text p {
+      margin-bottom: 1.5rem;
+      text-indent: 2rem;
+    }
+
+    .story-text strong {
+      color: var(--accent-color);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 850px) {
+      .app-container {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+      }
+
+      .main-content {
+        padding: 1.5rem 1rem;
+      }
+
+      .story-card {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Reading Progress Bar -->
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <div class="app-container">
+    <!-- Navigation Sidebar -->
+    <aside class="sidebar">
+      <h1 class="book-title">अनदेखा संघर्ष</h1>
+      <p class="author-name">लेखक: मृत्युंजय ब्रह्मावंशी</p>
+      
+      <ul class="chapter-list">
+        <li class="chapter-item active" onclick="loadChapter(1)">अध्याय १: शुरुआत</li>
+        <li class="chapter-item" onclick="loadChapter(2)">अध्याय २: संघर्ष का दौर</li>
+        <li class="chapter-item" onclick="loadChapter(6)">अध्याय ६: माँ की वापसी</li>
+      </ul>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Controls -->
+      <div class="controls">
+        <button class="btn" onclick="changeFontSize(1)">A+</button>
+        <button class="btn" onclick="changeFontSize(-1)">A-</button>
+        <button class="btn" onclick="toggleTheme()">Dark Mode</button>
+      </div>
+
+      <!-- Book Chapter Content -->
+      <article class="story-card">
+        <h2 class="chapter-header" id="chapterTitle">अध्याय ६: माँ की वापसी</h2>
+        <div class="story-text" id="chapterContent">
+          <!-- Text dynamically loaded via JavaScript -->
+        </div>
+      </article>
+    </main>
+  </div>
+
+  <script>
+    // Chapter Data Store
+    const storyData = {
+      1: {
+        title: "अध्याय १: शुरुआत",
+        content: "<p>यह कहानी की शुरुआत का हिस्सा है...</p>"
+      },
+      2: {
+        title: "अध्याय २: संघर्ष का दौर",
+        content: "<p>यहाँ दूसरे अध्याय की कहानी आएगी...</p>"
+      },
+      6: {
+        title: "अध्याय ६: माँ की वापसी और बरगद की छाया",
+        content: `
+          <p>लगातार मानसिक तनाव, कचहरी के अंतहीन चक्करों और समाज के तानों के कारण पिता जी की तबीयत अचानक इतनी बिगड़ गई कि वे बिस्तर से लग गए। उनकी साँसें टूटने लगी थीं। इस संकट की घड़ी में बड़ी बहन ने हिम्मत जुटाई और किसी पुराने रिश्तेदार के ज़रिए माँ तक फोन से संदेश पहुँचाया। उसने रोते हुए माँ को पिता जी की मरणासन्न हालत, घर की बर्बादी और बच्चों की बेबसी का सच बताया।</p>
+          <p>दिल्ली में अकेले रहकर नौकरी करते हुए माँ का गुस्सा पहले ही पिघल चुका था और वे अपने बच्चों को अकेला छोड़ आने के पश्चाताप में सुलग रही थीं। फोन पर अपनी बेटी की सिसकी सुनते ही उनके भीतर की माँ जाग उठी और वे बिना एक लम्हा गँवाए दिल्ली से शहर के लिए बदहवास भाग पड़ीं।</p>
+          <p>घर पहुँचकर पिता जी की हालत देख माँ ने अपनी ज़िंदगी भर की जमा-पूंजी और बचत पानी की तरह बहा दी। उन्होंने पिता जी को बड़े अस्पताल में भर्ती कराया, दिन-रात उनके सिरहाने सेवा की, जिससे पिता जी मौत के मुँह से बाहर निकल आए।</p>
+          <p>पिता जी पुलिस की नौकरी में थे और केस चलते हुए माँ से मिलना उनकी नौकरी के लिए जोखिम भरा था। लेकिन मौत के मुँह से लौटने के बाद पिता जी ने कचहरी के कागज़ों और कानूनी डर को किनारे पटक दिया और बच्चों को उनकी माँ से मिला दिया।</p>
+          <p><strong>कानूनी अविश्वास का माहौल:</strong> माँ के लौटने और पिता जी के ठीक होने के बाद भी अदालत में चल रहे आपराधिक केस पूरी तरह बंद नहीं हुए थे। बरसों के अलगाव और कानूनी चालबाज़ियों के कारण माँ के मन में यह गहरा डर बैठा हुआ था कि कहीं पिता जी उन्हें कोई नुकसान न पहुँचा दें। वे एक ही घर में रहते और साथ खाना खाते ज़रूर थे, लेकिन उनके बीच शक और अविश्वास की एक अदृश्य दीवार बनी हुई थी।</p>
+          <p><strong>पिता जी का व्यक्तित्व (बरगद रूप):</strong> आपके नज़रिये से पिता जी हमेशा एक 'अभेद्य हीरो' रहे, जिन्होंने अकेले माँ और बाप दोनों का फर्ज़ निभाया। वे न केवल एक ईमानदार पुलिसकर्मी थे, बल्कि पूरे खानदान को जोड़कर रखने वाले विशाल बरगद थे। उनकी दूरदर्शी सोच की बदौलत ही आगे चलकर उस पूरे मोहल्ले में आपके परिवार के २० घर बने और वे उस पूरे कुनबे के सरपरस्त व मुखिया के रूप में पूजे गए।</p>
+        `
+      }
+    };
+
+    // Load Specific Chapter
+    function loadChapter(chapterNum) {
+      const chapter = storyData[chapterNum];
+      if (chapter) {
+        document.getElementById('chapterTitle').innerText = chapter.title;
+        document.getElementById('chapterContent').innerHTML = chapter.content;
+        
+        // Update active class in sidebar
+        const items = document.querySelectorAll('.chapter-item');
+        items.forEach((item, index) => {
+          item.classList.remove('active');
+        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    // Font Size Adjuster
+    let currentFontSize = 1.15;
+    function changeFontSize(direction) {
+      currentFontSize += direction * 0.1;
+      if (currentFontSize < 0.9) currentFontSize = 0.9;
+      if (currentFontSize > 1.6) currentFontSize = 1.6;
+      document.documentElement.style.setProperty('--font-size', `${currentFontSize}rem`);
+    }
+
+    // Theme Toggle
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+    }
+
+    // Scroll Progress Bar
+    window.onscroll = function() {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById("progressBar").style.width = scrolled + "%";
+    };
+
+    // Initialize Chapter 6 on load
+    loadChapter(6);
+  </script>
+</body>
+</html>
